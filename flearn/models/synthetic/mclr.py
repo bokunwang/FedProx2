@@ -43,9 +43,9 @@ class Model(object):
             }
         loss = tf.losses.sparse_softmax_cross_entropy(labels=labels, logits=logits)
 
-        grads_and_vars = optimizer.compute_gradients(loss)
+        grads_and_vars = optimizer(learning_rate=0.1).compute_gradients(loss)
         grads, _ = zip(*grads_and_vars)
-        train_op = optimizer.apply_gradients(grads_and_vars, global_step=tf.train.get_global_step())
+        train_op = optimizer(learning_rate=0.1).apply_gradients(grads_and_vars, global_step=tf.train.get_global_step())
         eval_metric_ops = tf.count_nonzero(tf.equal(labels, predictions["classes"]))
         return features, labels, train_op, grads, eval_metric_ops, loss, predictions["classes"]
 
